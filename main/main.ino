@@ -4,7 +4,11 @@
 const HardwareSerial *JM = &Serial; // Serial port for JM sync cable (MIDI-like), eg. &Serial1 on secondary serial port on Mega
 const HardwareSerial *DEBUG = 0; // &Serial to debug on USB, or zero to disable debugging
 
-const byte PULSE_INTERRUPT_PIN = 3; // Digital pin for pulse clock input
+const int PULSE_INTERRUPT_PIN = 3; // Digital pin for pulse clock input
+
+const bool RESET_BUTTON_ENABLE = true; // Enable the button to force next quarter on new measure
+const int RESET_BUTTON_PIN = 5; // Digital pin for reset button
+const unsigned int RESET_BUTTON_POLL_MS = 20; // Reset button polling interval
 
 const int LED_PLAYING_PIN = 13; // Playing/stop LED
 const int LED_BEAT_M = 12; // Measure LED (quarter 1)
@@ -50,15 +54,20 @@ unsigned long measureLastMicros = 0;
 unsigned int bpm = 0; // Computed BPM
 
 volatile bool pulseFlag = false; // A pulse has been detected in the ISR
+volatile bool resetFlag = false; // The reset button has been pressed
 
 unsigned int PPQ = PPQ_OPT_1; // Incoming pulses per quarter (selected option)
 unsigned long linkLastMillis = 0;
+unsigned long resetButtonLastMillis = 0;
 unsigned long ppqSwitchLastMillis = 0;
 
 void setup() {
 
 	// Debugging
 	if (DEBUG) DEBUG->begin(9600);
+	
+	// Reset button setup
+	pinMode(RESET_BUTTON_PIN, INPUT);
 
 	// Status LEDs setup
 	pinMode(LED_PLAYING_PIN, OUTPUT);
@@ -86,12 +95,22 @@ void setup() {
 }
 
 void loop() {
+	resetButton();
 	ppqSwitch();
 	pulseFlagProcess();
 	detectStop();
 	linkMaintain();
 	leds();
 	display();
+}
+
+void resetButton() {
+	if (RESET_BUTTON_ENABLE) {
+		if ((linkLastMillis == 0) || (millis() - resetButtonLastMillis > RESET_BUTTON_POLL_MS)) {
+			if (digitalRead(RESET_BUTTON_PIN)) resetFlag = true;
+			resetButtonLastMillis = millis();
+		}
+	}
 }
 
 void ppqSwitch() {
@@ -116,7 +135,8 @@ void pulseFlagProcess() {
 		unsigned long nowMicros = micros();
 
 		// If it was stopped, resume
-		if (!playing) {
+		if (!playing || resetFlag) {
+			resetFlag = false;
 
 			if (DEBUG) DEBUG->println("Resuming...");
 
