@@ -3,6 +3,8 @@ JamMan Arduino sync
 
 An Arduino project for syncing the tempo of a JamMan Solo XT looper pedal (and compatible ones) to a clock/pulse input, for using it with modular synths and general analog gear.
 
+[**Arduino code**](main/main.ino) | [**Muff Wiggler thread**](https://www.muffwiggler.com/forum/viewtopic.php?t=206501)
+
 Features
 --------
 
@@ -30,6 +32,11 @@ To detect clock pulses with the highest reliability possible, Arduino's interrup
 The rest of the circuit is basic, just the usual resistors on LEDs pins and an on/off switch directly connected to the Arduino power source.
 
 If the optional pulses-per-quarter switch is enabled, it must be connected to an analog pin in a way that it feeds 0V or 5V depending on the switch position. If the BPM display is enabled, check the LTC-2727G datasheet or adapt the code to a 3+ digits 7-segments display of choice.
+
+Pictures
+--------
+
+<img src="pictures/pic1.jpg" width="420"> <img src="pictures/pic2.jpg" width="420">
 
 Thanks
 ------
