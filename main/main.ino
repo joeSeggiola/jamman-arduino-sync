@@ -229,7 +229,7 @@ void leds() {
 	// Beat indicators
 	bool ledsOn = playing && ((micros() - quarterLastMicros) / 1000 < LEDS_DURATION_MS);
 	digitalWrite(LED_BEAT_M, ledsOn && quarterCounter == 0 ? HIGH : LOW);
-	digitalWrite(LED_BEAT_Q, ledsOn && quarterCounter > 0 ? HIGH : LOW);
+	digitalWrite(LED_BEAT_Q, ledsOn ? HIGH : LOW);
 	
 }
 
