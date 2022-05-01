@@ -3,12 +3,10 @@ JamMan Arduino sync
 
 An Arduino project for syncing the JamMan Solo XT looper pedal (and compatible ones) to any analog clock/pulse input, for example from Korg Volca units, Arturia sequencers and synthesizers, Eurorack signals, etc.
 
-[**Arduino code**][1] | [**Muff Wiggler**][2] | [🛒 **Buy on Reverb**][3] | [🛒 **Buy on Tindie**][4]
+[**Arduino code**][1] | [🗨️ **Mod Wiggler**][2]
 
 [1]: main/main.ino
-[2]: https://www.muffwiggler.com/forum/viewtopic.php?t=206501
-[3]: https://reverb.com/item/39927475-jamman-loopers-synchronization-for-analog-gear-like-volca-arturia-eurorack
-[4]: https://www.tindie.com/products/23306/
+[2]: https://modwiggler.com/forum/viewtopic.php?t=206501
 
 Features
 --------
